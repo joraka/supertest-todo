@@ -2,7 +2,7 @@ const { expect, describe, test } = require('@jest/globals');
 const request = require('supertest');
 const app = require('../app');
 
-describe('Positive tests', () => {
+describe('➡️ Positive tests', () => {
   describe('Get todo', () => {
     test('GET /todos/ - should return all todos', async () => {
       const res = await request(app).get('/todos/');
