@@ -39,7 +39,7 @@ describe('Positive tests', () => {
   });
 
   describe('Create todo', () => {
-    test('POST /todos/', async () => {
+    test('POST /todos/ - should create a new todo', async () => {
       const reqBody = {
         title: 'new todo',
       };
@@ -91,7 +91,7 @@ describe('Positive tests', () => {
 
 describe('Negative tests', () => {
   describe('Get todo', () => {
-    test("GET /todos/-1 - should return error message when user doesn't exist", async () => {
+    test('GET /todos/-1 - should show error when getting non existing todo', async () => {
       const res = await request(app).get('/todos/-1');
 
       expect(res.statusCode).toBe(404);
@@ -102,53 +102,31 @@ describe('Negative tests', () => {
     });
   });
 
-  //   describe("Create todo", () => {
-  //     test("POST /todos/", async () => {
-  //       const reqBody = {
-  //         title: "new todo",
-  //       };
-  //       const res = await request(app).post("/todos").send(reqBody);
+  describe('Update todo', () => {
+    test('PUT /todos/-1 - should show error when updating non existing todo', async () => {
+      const reqBody = {
+        title: 'Updated todo name',
+        completed: true,
+      };
+      const res = await request(app).put('/todos/-1').send(reqBody);
 
-  //       expect(res.statusCode).toBe(201);
-  //       expect(typeof res.body).toBe("object");
-  //       expect(typeof res.body.id).toBe("number");
-  //       expect(res.body.id).toBeGreaterThan(0);
-  //       expect(typeof res.body.title).toBe("string");
-  //       expect(res.body.title).toBe(reqBody.title);
-  //       expect(typeof res.body.completed).toBe("boolean");
-  //     });
-  //   });
+      expect(res.statusCode).toBe(404);
 
-  //   describe("Update todo", () => {
-  //     test("PUT /todos/1 - should update todo with id 1", async () => {
-  //       const reqBody = {
-  //         title: "Updated todo name",
-  //         completed: true,
-  //       };
-  //       const res = await request(app).put("/todos/1").send(reqBody);
+      expect(typeof res.body).toBe('object');
+      expect(typeof res.body.message).toBe('string');
+      expect(res.body.message).toBe('Todo not found');
+    });
+  });
 
-  //       expect(res.statusCode).toBe(200);
-  //       expect(typeof res.body).toBe("object");
-  //       expect(typeof res.body.id).toBe("number");
-  //       expect(res.body.id).toBe(1);
-  //       expect(typeof res.body.title).toBe("string");
-  //       expect(res.body.title).toBe(reqBody.title);
-  //       expect(typeof res.body.completed).toBe("boolean");
-  //       expect(res.body.completed).toBe(reqBody.completed);
-  //     });
-  //   });
+  describe('Delete todo', () => {
+    test('DELETE /todos/-1 - should show error when deleting non existing todo', async () => {
+      const res = await request(app).delete('/todos/-1');
 
-  //   describe("Delete todo", () => {
-  //     test("DELETE /todos/1 - should delete todo with id 1", async () => {
-  //       const res = await request(app).delete("/todos/1");
+      expect(res.statusCode).toBe(404);
 
-  //       expect(res.statusCode).toBe(200);
-  //       expect(typeof res.body).toBe("object");
-  //       expect(typeof res.body.id).toBe("number");
-  //       expect(res.body.id).toBe(1);
-  //       expect(typeof res.body.title).toBe("string");
-  //       expect(res.body.title.length).toBeGreaterThan(0);
-  //       expect(typeof res.body.completed).toBe("boolean");
-  //     });
-  //   });
+      expect(typeof res.body).toBe('object');
+      expect(typeof res.body.message).toBe('string');
+      expect(res.body.message).toBe('Todo not found');
+    });
+  });
 });
